@@ -70,6 +70,10 @@ def logout_request(request):
 # Create a `registration_request` view to handle sign up request
 # def registration_request(request):
 # ...
+def registration_request(request):
+    context = {}
+    if request.method == "GET":
+        return render(request, 'djangoapp/registration.html', context)
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
