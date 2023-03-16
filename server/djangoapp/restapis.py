@@ -39,7 +39,8 @@ def get_dealers_from_cf(url, **kwargs):
     print(json_result)  # Add this line to print out the value of json_result
     if json_result:
         # Get the row list in JSON as dealers
-        dealers = json_result[0]["rows"]
+        dealers = json_result["rows"]
+        print(dealers)
         # For each dealer object
         for dealer in dealers:
             # Create a CarDealer object with values in `dealer` dictionary
@@ -47,7 +48,9 @@ def get_dealers_from_cf(url, **kwargs):
                                    id=dealer["id"], lat=dealer["lat"], long=dealer["long"],
                                    short_name=dealer["short_name"],
                                    st=dealer["st"], zip=dealer["zip"])
+                                   
             results.append(dealer_obj)
+            print(results)
 
     return results
 
@@ -58,6 +61,27 @@ def get_dealers_from_cf(url, **kwargs):
 # def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
+def get_dealer_reviews_from_cf(url, **kwargs):
+    results = []
+    # Call get_request with a URL parameter
+    json_result = get_request(url, dealerId=dealer_id)
+    print(json_result)  # Add this line to print out the value of json_result
+    if json_result:
+        # Get the row list in JSON as dealers
+        dealers = json_result["review"]
+        print(dealers)
+        # For each dealer object
+        for dealer in dealers:
+            # Create a CarDealer object with values in `dealer` dictionary
+            dealer_obj = CarDealer(dealership=dealer["dealership"], name=dealer["name"], purchase=dealer["purchase"],
+                                   review=dealer["review"], purchase_date=dealer["purchase_date"], car_make=dealer["car_make"],
+                                   car_model=dealer["car_model"],
+                                   car_year=dealer["car_year"], sentiment=dealer["sentiment"], id=dealer["id"])
+                                   
+            results.append(dealer_obj)
+            print(results)
+
+    return results
 
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
