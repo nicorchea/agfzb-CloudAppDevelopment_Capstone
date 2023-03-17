@@ -30,7 +30,7 @@ urlpatterns = [
 
     # path for dealer reviews view
     # path('dealer/', views=get_dealer_details, name='dealer_details'),
-    path('dealer/', view=views.get_dealer_details, name='dealer_details')
+    path('dealer/<int:dealer_id>/', view=views.get_dealer_details, name='dealer_details'),
 
 
     # path for add a review view

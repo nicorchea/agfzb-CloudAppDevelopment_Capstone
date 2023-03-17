@@ -77,17 +77,19 @@ def registration_request(request):
         return render(request, 'djangoapp/registration.html', context)
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
+
 def get_dealerships(request):
+    context = {}
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/c9d1715f-fd0a-4317-9161-5032ff1121c2/dealership-package/get-dealership"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
-        # Concat all dealer's short name
-
-        print(dealerships)
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
-        # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        
+        # Add dealerships to the context
+        context['dealerships'] = dealerships
+        
+        # Render the template with the context
+        return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
@@ -98,12 +100,26 @@ def get_dealer_details(request, dealer_id):
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/c9d1715f-fd0a-4317-9161-5032ff1121c2/dealership-package/get-review"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
-        # Concat all dealer's short name
-
-        print(dealerships)
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
-        # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        # Find dealer with matching ID
+        dealer = next((dealer for dealer in dealerships if dealer.id == dealer_id), None)
+        if dealer:
+            # Return details for matching dealer
+            response_data = {
+                'address': dealer.address,
+                'city': dealer.city,
+                'full_name': dealer.full_name,
+                'id': dealer.id,
+                'lat': dealer.lat,
+                'long': dealer.long,
+                'short_name': dealer.short_name,
+                'st': dealer.st,
+                'zip': dealer.zip,
+                'state': dealer.state,
+            }
+            return JsonResponse(response_data)
+        else:
+            # Return error message if no matching dealer found
+            return HttpResponse(f'Dealer with ID {dealer_id} not found')
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
