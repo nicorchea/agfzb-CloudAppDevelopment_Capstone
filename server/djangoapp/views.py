@@ -10,6 +10,7 @@ from datetime import datetime
 import logging
 import json
 from .restapis import get_dealers_from_cf
+from .restapis import get_dealer_reviews_from_cf
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -62,7 +63,6 @@ def login_request(request):
 # ...
 def logout_request(request):
         # Get the user object based on session id in request
-        print("Log out the user `{}`".format(request.user.username))
         # Logout user in the request
         logout(request)
         # Redirect user back to course list view
@@ -96,25 +96,26 @@ def get_dealerships(request):
 # def get_dealer_details(request, dealer_id):
 # ...
 def get_dealer_details(request, dealer_id):
+
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/c9d1715f-fd0a-4317-9161-5032ff1121c2/dealership-package/get-review"
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf(url)
+        dealerships = get_dealer_reviews_from_cf(url, dealer_id)
         # Find dealer with matching ID
         dealer = next((dealer for dealer in dealerships if dealer.id == dealer_id), None)
         if dealer:
             # Return details for matching dealer
             response_data = {
-                'address': dealer.address,
-                'city': dealer.city,
-                'full_name': dealer.full_name,
                 'id': dealer.id,
-                'lat': dealer.lat,
-                'long': dealer.long,
-                'short_name': dealer.short_name,
-                'st': dealer.st,
-                'zip': dealer.zip,
-                'state': dealer.state,
+                'name': dealer.name,
+                'dealership': dealer.dealership,
+                'review': dealer.review,
+                'purchase': dealer.purchase,
+                'another': dealer.another,
+                'purchase_date': dealer.purchase_date,
+                'car_make': dealer.car_make,
+                'car_model': dealer.car_model,
+                'car_year': dealer.car_year,
             }
             return JsonResponse(response_data)
         else:

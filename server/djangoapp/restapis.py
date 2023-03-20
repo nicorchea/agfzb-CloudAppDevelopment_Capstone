@@ -10,7 +10,6 @@ from requests.auth import HTTPBasicAuth
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
 #                                     auth=HTTPBasicAuth('apikey', api_key))
 def get_request(url, **kwargs):
-    print(kwargs)
     print("GET from {} ".format(url))
     try:
         # Call get method of requests library with URL and parameters
@@ -36,11 +35,9 @@ def get_dealers_from_cf(url, **kwargs):
     results = []
     # Call get_request with a URL parameter
     json_result = get_request(url)
-    print(json_result)  # Add this line to print out the value of json_result
     if json_result:
         # Get the row list in JSON as dealers
         dealers = json_result["rows"]
-        print(dealers)
         # For each dealer object
         for dealer in dealers:
             # Create a CarDealer object with values in `dealer` dictionary
@@ -50,7 +47,6 @@ def get_dealers_from_cf(url, **kwargs):
                                    st=dealer["st"], zip=dealer["zip"], state=dealer["state"])
                                    
             results.append(dealer_obj)
-            print(results)
 
     return results
 
@@ -61,25 +57,22 @@ def get_dealers_from_cf(url, **kwargs):
 # def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
-def get_dealer_reviews_from_cf(url, **kwargs):
+def get_dealer_reviews_from_cf(url, dealer_id, **kwargs):
     results = []
     # Call get_request with a URL parameter
     json_result = get_request(url, dealerId=dealer_id)
     print(json_result)  # Add this line to print out the value of json_result
     if json_result:
-        # Get the row list in JSON as dealers
-        dealers = json_result["review"]
-        print(dealers)
-        # For each dealer object
-        for dealer in dealers:
-            # Create a CarDealer object with values in `dealer` dictionary
-            dealer_obj = CarDealer(dealership=dealer["dealership"], name=dealer["name"], purchase=dealer["purchase"],
-                                   review=dealer["review"], purchase_date=dealer["purchase_date"], car_make=dealer["car_make"],
-                                   car_model=dealer["car_model"],
-                                   car_year=dealer["car_year"], sentiment=dealer["sentiment"], id=dealer["id"])
-                                   
-            results.append(dealer_obj)
-            print(results)
+        # Get the dealer object from JSON
+        dealer = json_result["review"]
+        print(dealer)
+        # Create a CarDealer object with values in `dealer` dictionary
+        dealer_obj = CarDealer(dealership=dealer["dealership"], name=dealer["name"], purchase=dealer["purchase"],
+                               review=dealer["review"], purchase_date=dealer["purchase_date"], car_make=dealer["car_make"],
+                               car_model=dealer["car_model"],
+                               car_year=dealer["car_year"], id=dealer["id"])
+        results.append(dealer_obj)
+        print(results)
 
     return results
 
@@ -88,6 +81,5 @@ def get_dealer_reviews_from_cf(url, **kwargs):
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
-
 
 
