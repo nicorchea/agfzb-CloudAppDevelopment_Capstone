@@ -12,6 +12,7 @@ import json
 from .restapis import get_dealers_from_cf
 from .restapis import get_dealer_reviews_from_cf
 
+
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -110,7 +111,6 @@ def get_dealer_details(request, dealer_id):
                 'dealership': dealer.dealership,
                 'review': dealer.review,
                 'purchase': dealer.purchase,
-                # 'another': dealer.another,
                 'purchase_date': dealer.purchase_date,
                 'car_make': dealer.car_make,
                 'car_model': dealer.car_model,
@@ -127,4 +127,10 @@ def get_dealer_details(request, dealer_id):
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
+
+def add_review(request):
+    context = {}
+    if request.method == "GET":
+        return render(request, 'djangoapp/add_review.html', context)
+
 
