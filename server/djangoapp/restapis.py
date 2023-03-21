@@ -1,6 +1,9 @@
 import requests
 import json
 from .models import CarDealer
+from .models import DealerReview
+
+
 from requests.auth import HTTPBasicAuth
 
 
@@ -67,10 +70,10 @@ def get_dealer_reviews_from_cf(url, dealer_id, **kwargs):
         dealer = json_result["review"]
         print(dealer)
         # Create a CarDealer object with values in `dealer` dictionary
-        dealer_obj = CarDealer(dealership=dealer["dealership"], name=dealer["name"], purchase=dealer["purchase"],
-                               review=dealer["review"], purchase_date=dealer["purchase_date"], car_make=dealer["car_make"],
-                               car_model=dealer["car_model"],
-                               car_year=dealer["car_year"], id=dealer["id"])
+        dealer_obj = DealerReview( name=dealer["name"], dealership=dealer["dealership"], purchase=dealer["purchase"],
+                           review=dealer["review"], purchase_date=dealer["purchase_date"], car_make=dealer["car_make"],
+                           car_model=dealer["car_model"],
+                           car_year=dealer["car_year"], id=dealer["id"])
         results.append(dealer_obj)
         print(results)
 

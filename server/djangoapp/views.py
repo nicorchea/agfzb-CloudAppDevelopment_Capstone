@@ -96,7 +96,6 @@ def get_dealerships(request):
 # def get_dealer_details(request, dealer_id):
 # ...
 def get_dealer_details(request, dealer_id):
-
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/c9d1715f-fd0a-4317-9161-5032ff1121c2/dealership-package/get-review"
         # Get dealers from the URL
@@ -104,23 +103,26 @@ def get_dealer_details(request, dealer_id):
         # Find dealer with matching ID
         dealer = next((dealer for dealer in dealerships if dealer.id == dealer_id), None)
         if dealer:
-            # Return details for matching dealer
-            response_data = {
+            # Create a dictionary with dealer details
+            context = {
                 'id': dealer.id,
                 'name': dealer.name,
                 'dealership': dealer.dealership,
                 'review': dealer.review,
                 'purchase': dealer.purchase,
-                'another': dealer.another,
+                # 'another': dealer.another,
                 'purchase_date': dealer.purchase_date,
                 'car_make': dealer.car_make,
                 'car_model': dealer.car_model,
                 'car_year': dealer.car_year,
             }
-            return JsonResponse(response_data)
+            # Create an empty context dictionary and append the reviews list from get_dealer_reviews_from_cf method to context.
+            context['reviews'] = dealerships
+            return render(request, 'djangoapp/dealer_details.html', context)
         else:
             # Return error message if no matching dealer found
             return HttpResponse(f'Dealer with ID {dealer_id} not found')
+
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):

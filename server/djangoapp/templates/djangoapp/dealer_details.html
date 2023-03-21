@@ -30,8 +30,7 @@
         </div>
         {% if user.is_authenticated %}
         <li>
-            <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-            <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+            <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">review</a>
         </li>
         {% else %}
         <li>
@@ -51,6 +50,36 @@
     </nav>
 
     <!-- Add reviews as cards -->
+    <div class="container row">
+        <div class="col" >
+    <div class="card">
+        <img  src="{{MEDIA_URL}}/emoji/positive.png" class="card-img-left w-25 img-fluid">
+        <div class="card-body">
+            <h5 class="card-title">Chevrolete, Corvete</h5>
+            <h5 class="card-title">2023</h5>
+            <p class="card-text">Nice Car!</p>
+        </div>
+    </div>
+</div>
+<div class="col" >
+    <div class="card">
+        <img  src="{{MEDIA_URL}}/emoji/positive.png" class="card-img-left w-25 img-fluid">
+        <div class="card-body">
+            <h5 class="card-title">Renault, 12</h5>
+            <p class="card-text">Alto auto</p>
+        </div>
+    </div>
+</div>
+<div class="col" >
+    <div class="card">
+        <img  src="{{MEDIA_URL}}/emoji/negative.png" class="card-img-left w-25 img-fluid">
+        <div class="card-body">
+            <h5 class="card-title">Volkswagen, Beetle</h5>
+            <p class="card-text">Not a good car</p>
+        </div>
+    </div>
+</div>
+</div>
 
     </body>
 
